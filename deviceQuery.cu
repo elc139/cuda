@@ -1,0 +1,42 @@
+#include <stdio.h>
+ 
+// Print device properties
+void printDevProp(cudaDeviceProp devProp)
+{
+    printf("Major revision number:         %d\n",  devProp.major);
+    printf("Minor revision number:         %d\n",  devProp.minor);
+    printf("Name:                          %s\n",  devProp.name);
+    printf("Total global memory:           %lu\n",  devProp.totalGlobalMem);
+    printf("Total shared memory per block: %lu\n",  devProp.sharedMemPerBlock);
+    printf("Total registers per block:     %d\n",  devProp.regsPerBlock);
+    printf("Maximum threads per block:     %d\n",  devProp.maxThreadsPerBlock);
+    for (int i = 0; i < 3; ++i)
+    printf("Maximum dimension %d of block:  %d threads\n", i, devProp.maxThreadsDim[i]);
+    for (int i = 0; i < 3; ++i)
+    printf("Maximum dimension %d of grid:   %d blocks\n", i, devProp.maxGridSize[i]);
+    printf("Clock rate:                    %d\n",  devProp.clockRate);
+    printf("Total constant memory:         %lu\n",  devProp.totalConstMem);
+    printf("Number of multiprocessors:     %d\n",  devProp.multiProcessorCount);
+    return;
+}
+ 
+int main()
+{
+    // Number of CUDA devices
+    int devCount;
+    cudaGetDeviceCount(&devCount);
+    printf("CUDA Device Query...\n");
+    printf("There are %d CUDA devices.\n", devCount);
+ 
+    // Iterate through devices
+    for (int i = 0; i < devCount; ++i)
+    {
+        // Get device properties
+        printf("\nCUDA Device #%d\n", i);
+        cudaDeviceProp devProp;
+        cudaGetDeviceProperties(&devProp, i);
+        printDevProp(devProp);
+    }
+ 
+    return 0;
+}
